@@ -204,23 +204,23 @@ public class FlexiblePageControl: UIView {
     /** if the currentPage > displayCount, update the dots view to show current page at the center, else it will be out of bounds to the right */
     func setInitialDotsViewForOutOfBoundsPage()
     {
-//        if currentPage == numberOfPages - 1
-//        {
-//            items = items.map {
-//                $0.dotColor = pageIndicatorTintColor
-//                return $0
-//            }
-//            
-//            items.last?.dotColor = currentPageIndicatorTintColor
-//        }
-//        else if currentPage > displayCount
-//        {
-//            items = items.map {
-//                $0.dotColor = pageIndicatorTintColor
-//                return $0
-//            }
-//            items[items.count - 2].dotColor = currentPageIndicatorTintColor
-//        }
+        if currentPage == numberOfPages - 1
+        {
+            items = items.map {
+                $0.dotColor = pageIndicatorTintColor
+                return $0
+            }
+            
+            items.last?.dotColor = currentPageIndicatorTintColor
+        }
+        else if currentPage > displayCount
+        {
+            items = items.map {
+                $0.dotColor = pageIndicatorTintColor
+                return $0
+            }
+            items[items.count - 2].dotColor = currentPageIndicatorTintColor
+        }
     }
     
     private func updateDotPosition(currentPage: Int, animated: Bool) {

@@ -60,8 +60,8 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         
         numberOfItems = 20
-        currentPage = 19
-//        pageControl.setInitialDotsViewForOutOfBoundsPage()
+        currentPage = 16
+        pageControl.setInitialDotsViewForOutOfBoundsPage()
     }
     
     override func didReceiveMemoryWarning() {
