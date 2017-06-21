@@ -8,44 +8,78 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIScrollViewDelegate {
+class ViewController: UIViewController {
     
-    let scrollSize: CGFloat = 300
-    let numberOfPage: Int = 10
-
-    let pageControl1 = FlexiblePageControl()
-
-    @IBOutlet weak var pageControl2: FlexiblePageControl!
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        let scrollView = UIScrollView()
-        scrollView.delegate = self
-        scrollView.frame = CGRect(x: 0, y: 0, width: scrollSize, height: scrollSize)
-        scrollView.center = view.center
-        scrollView.contentSize = CGSize(width: scrollSize * CGFloat(numberOfPage), height: scrollSize)
-        scrollView.isPagingEnabled = true
-        
-        pageControl1.center = CGPoint(x: scrollView.center.x, y: scrollView.frame.maxY + 16)
-        pageControl1.numberOfPages = numberOfPage
-
-        pageControl2.numberOfPages = numberOfPage
-
-        for index in  0..<numberOfPage {
-            let view = UIImageView(frame: CGRect(x: CGFloat(index) * scrollSize, y: 0, width: scrollSize, height: scrollSize))
-            let imageNamed = NSString(format: "image%02d.jpg", index)
-            view.image = UIImage(named: imageNamed as String)
-            scrollView.addSubview(view)
+    var numberOfItems:Int
+    {
+        set {
+            var page:Int?
+            if pageControl != nil
+            {
+                page = currentPage
+            }
+            pageControl = FlexiblePageControl()
+            pageControl.numberOfPages = newValue
+            navigationItem.titleView = pageControl
+            show()
+            pageControl.displayCount = 10
+            if page != nil
+            {
+                currentPage = page!
+            }
         }
-
-        view.addSubview(scrollView)
-        view.addSubview(pageControl1)
+        
+        get {
+            return pageControl.numberOfPages
+        }
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-
-        pageControl1.setProgress(contentOffsetX: scrollView.contentOffset.x, pageWidth: scrollView.bounds.width)
-        pageControl2.setProgress(contentOffsetX: scrollView.contentOffset.x, pageWidth: scrollView.bounds.width)
+    var currentPage:Int {
+        
+        set {
+            pageControl.currentPage = newValue
+            show()
+        }
+        
+        get {
+            return pageControl.currentPage
+        }
+        
+    }
+    
+    func show()
+    {
+        lblCurrentPageNumber.text = "\(currentPage + 1)/\(numberOfItems)"
+        lblCurrentPageNumber.sizeToFit()
+    }
+    
+    var pageControl:FlexiblePageControl!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
+        
+        numberOfItems = 20
+        currentPage = 19
+//        pageControl.setInitialDotsViewForOutOfBoundsPage()
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    @IBOutlet weak var lblCurrentPageNumber: UILabel!
+    @IBAction func btnAdd10Clicked(_ sender: Any) {
+        numberOfItems += 10
+    }
+    @IBAction func btnNextClicked(_ sender: Any) {
+        guard currentPage < numberOfItems - 1 else { return }
+        currentPage += 1
+    }
+    @IBAction func btnPrevClicked(_ sender: Any) {
+        guard currentPage > 0 else { return }
+        currentPage -= 1
+        
     }
 }
